@@ -7,6 +7,7 @@ import { WidgetExtension } from "./extensions/WidgetExtension";
 import { WorkflowExtension } from "./extensions/WorkflowExtension";
 import { GlobalEventExtension } from "./extensions/GlobalEventExtension";
 import { ServerExtension } from "./extensions/ServerExtension";
+import { FormFastExportService } from "./services/FormFastExportService";
 
 export function activate(context: ExtensionContext) {
     if (!workspace.workspaceFolders) {
@@ -23,5 +24,4 @@ export function activate(context: ExtensionContext) {
     ServerExtension.activate(context);
 }
 
-export function deactivate() {
-}
+export function deactivate() {}

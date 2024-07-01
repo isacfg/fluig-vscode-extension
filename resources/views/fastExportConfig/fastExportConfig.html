@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações de Exportação Rápida</title>
+    <link rel="stylesheet" href="${d.bootstrapCss}">
+    <link rel="stylesheet" href="${d.themeCss}">
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>Configurações de Exportação Rápida</h1>
+
+        <form id="formConfig">
+            <div class="row g-3">
+                <div class="col-md-12 form-group">
+                    <label for="server" class="form-label">Servidor Padrão</label>
+                    <select id="server" name="server" class="form-select" required>
+                        <option value=""></option>
+                        ${d.serverOptions}
+                    </select>
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label for="parentId" class="form-label">ID da Pasta Padrão</label>
+                    <input type="number" class="form-control" id="parentId" name="parentId" required value="${d.defaultParentId}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label for="datasetName" class="form-label">Nome do Dataset Padrão</label>
+                    <input type="text" class="form-control" id="datasetName" name="datasetName" required value="${d.defaultDatasetName}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label for="descriptionField" class="form-label">Campo Descritor Padrão (opcional)</label>
+                    <input type="text" class="form-control" id="descriptionField" name="descriptionField" value="${d.defaultDescriptionField}">
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label for="persistenceType" class="form-label">Tipo de Persistência Padrão</label>
+                    <select class="form-select" id="persistenceType" name="persistenceType" required>
+                        <option value="1" ${d.defaultPersistenceType === 1 ? 'selected' : ''}>Tabelas de Banco de Dados (recomendado)</option>
+                        <option value="0" ${d.defaultPersistenceType === 0 ? 'selected' : ''}>Numa única tabela (pequena quantidade de registros)</option>
+                    </select>
+                </div>
+            </div>
+
+            <p class="mt-3">
+                <button class="btn btn-primary" type="submit">Salvar</button>
+            </p>
+        </form>
+    </div>
+
+    <script src="${d.jquery}"></script>
+    <script src="${d.fastExportConfigJs}"></script>
+</body>
+</html>

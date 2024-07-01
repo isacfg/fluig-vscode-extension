@@ -198,6 +198,11 @@
                     "light": "dist/images/light/preview.svg",
                     "dark": "dist/images/dark/preview.svg"
                 }
+            },   
+            {
+                "command": "fluiggers-fluig-vscode-extension.openFastExportConfig",
+                "title": "Fluig: Configurações de Exportação Rápida",
+                "category": "Fluig"
             }
         ],
         "menus": {
@@ -435,6 +440,12 @@
                 "key": "ctrl+f12",
                 "mac": "cmd+f12",
                 "when": "editorTextFocus && resourcePath =~ /[\\/\\\\]workflow[\\/\\\\]scripts[\\/\\\\].+\\.js$/"
+            },
+            {
+                "command": "fluiggers-fluig-vscode-extension.fastExportForm",
+                "key": "ctrl+shift+f9",
+                "mac": "cmd+shift+f9",
+                "when": "editorTextFocus && resourceFilename =~ /\\.html$/i && resourcePath =~ /forms\\//i"
             }
         ],
         "viewsContainers": {
