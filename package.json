@@ -201,6 +201,11 @@
                 "category": "Fluig"
             },
             {
+                "command": "fluiggers-fluig-vscode-extension.importProcess",
+                "title": "Importar Processo",
+                "category": "Fluig"
+            },
+            {
                 "command": "fluiggers-fluig-vscode-extension.importGlobalEvent",
                 "title": "Importar Evento Global",
                 "category": "Fluig"
