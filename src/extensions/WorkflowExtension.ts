@@ -4,10 +4,15 @@ import { readFileSync } from "fs";
 import { TemplateService } from "../services/TemplateService";
 import { AttributionMechanismService } from '../services/AttributionMechanismService';
 import { WorkflowService } from '../services/WorkflowService';
+import { ProcessService } from '../services/ProcessService';
+import { FluigProcessCliService } from '../services/FluigProcessCliService';
+import { FluigProcessRuntimeInstaller } from '../services/FluigProcessRuntimeInstaller';
 
 export class WorkflowExtension {
 
     public static activate(context: vscode.ExtensionContext): void {
+        FluigProcessCliService.initialize(context);
+
         context.subscriptions.push(vscode.commands.registerCommand(
             "fluiggers-fluig-vscode-extension.newWorkflowEvent",
             WorkflowExtension.createWorkflowEvent
@@ -31,6 +36,26 @@ export class WorkflowExtension {
         context.subscriptions.push(vscode.commands.registerCommand(
             "fluiggers-fluig-vscode-extension.exportMechanism",
             WorkflowExtension.exportMechanism
+        ));
+        context.subscriptions.push(vscode.commands.registerCommand(
+            "fluiggers-fluig-vscode-extension.importProcess",
+            ProcessService.import
+        ));
+        context.subscriptions.push(vscode.commands.registerCommand(
+            "fluiggers-fluig-vscode-extension.importManyProcesses",
+            ProcessService.importMany
+        ));
+        context.subscriptions.push(vscode.commands.registerCommand(
+            "fluiggers-fluig-vscode-extension.installFluigProcessRuntime",
+            () => FluigProcessRuntimeInstaller.install(context)
+        ));
+        context.subscriptions.push(vscode.commands.registerCommand(
+            "fluiggers-fluig-vscode-extension.uninstallFluigProcessRuntime",
+            () => FluigProcessRuntimeInstaller.uninstall(context)
+        ));
+        context.subscriptions.push(vscode.commands.registerCommand(
+            "fluiggers-fluig-vscode-extension.checkFluigProcessRuntime",
+            FluigProcessCliService.diagnose
         ));
     }
 

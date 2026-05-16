@@ -2,7 +2,7 @@
     "name": "fluiggers-fluig-vscode-extension",
     "displayName": "Fluig - Extensão para Desenvolvimento",
     "description": "Extensão para agilizar o desenvolvimento para o TOTVS Fluig no VS Code",
-    "version": "2.11.0",
+    "version": "2.12.0",
     "publisher": "Fluiggers",
     "icon": "images/icon.png",
     "repository": {
@@ -102,6 +102,31 @@
             {
                 "command": "fluiggers-fluig-vscode-extension.exportMechanism",
                 "title": "Exportar Mecanismo Customizado",
+                "category": "Fluig"
+            },
+            {
+                "command": "fluiggers-fluig-vscode-extension.importProcess",
+                "title": "Importar Processo",
+                "category": "Fluig"
+            },
+            {
+                "command": "fluiggers-fluig-vscode-extension.importManyProcesses",
+                "title": "Importar Vários Processos",
+                "category": "Fluig"
+            },
+            {
+                "command": "fluiggers-fluig-vscode-extension.installFluigProcessRuntime",
+                "title": "Instalar Runtime fluig-process",
+                "category": "Fluig"
+            },
+            {
+                "command": "fluiggers-fluig-vscode-extension.uninstallFluigProcessRuntime",
+                "title": "Remover Runtime fluig-process",
+                "category": "Fluig"
+            },
+            {
+                "command": "fluiggers-fluig-vscode-extension.checkFluigProcessRuntime",
+                "title": "Verificar Runtime fluig-process",
                 "category": "Fluig"
             },
             {
@@ -374,6 +399,14 @@
                     "group": "1_Fluig4Workflow@6"
                 },
                 {
+                    "command": "fluiggers-fluig-vscode-extension.importManyProcesses",
+                    "group": "1_Fluig4Workflow@7"
+                },
+                {
+                    "command": "fluiggers-fluig-vscode-extension.importProcess",
+                    "group": "1_Fluig4Workflow@8"
+                },
+                {
                     "command": "fluiggers-fluig-vscode-extension.newWidget",
                     "group": "1_Fluig5WCM@1"
                 },
@@ -518,6 +551,13 @@
                 "contents": "Nenhum Servidor encontrado.\n[Adicionar Servidor](command:fluiggers-fluig-vscode-extension.addServer)"
             }
         ],
+        "languages": [
+            {
+                "id": "ftl",
+                "aliases": ["FreeMarker", "ftl"],
+                "extensions": [".ftl"]
+            }
+        ],
         "snippets": [
             {
                 "language": "html",
@@ -548,6 +588,24 @@
                         "description": "Caminho do seu Arquivo de Configuração de Servidores",
                         "default": "",
                         "scope": "machine"
+                    },
+                    "fluiggers.fluigProcessHome": {
+                        "type": "string",
+                        "markdownDescription": "Diretório da distribuição **fluig-process** (deve conter `plugins/org.eclipse.equinox.launcher_*.jar` ou `runtime/plugins/org.eclipse.equinox.launcher_*.jar`). Usado pelo comando *Importar Processo*. Exemplos:\n\n- macOS/Linux: `/Users/seu-usuario/fluig-process` ou `/opt/fluig-process`\n- Windows: `C:\\Users\\seu-usuario\\fluig-process`\n\nDeixe vazio se for usar o comando *Fluig: Instalar Runtime fluig-process*, que preenche este caminho automaticamente. Veja a seção *Importar Processo do Servidor* no README.",
+                        "default": "",
+                        "scope": "machine"
+                    },
+                    "fluiggers.fluigProcessCliPath": {
+                        "type": "string",
+                        "markdownDescription": "(Opcional) Caminho explícito para o JAR da CLI fluig-process. O arquivo costuma se chamar `fluig-process-cli.jar` ou `fluig-process-cli-<versão>.jar`. Exemplos:\n\n- `/Users/seu-usuario/fluig-process/lib/fluig-process-cli.jar`\n- `/Users/seu-usuario/fluig-process/cli/fluig-process-cli-0.1.0-SNAPSHOT.jar`\n- `C:\\Users\\seu-usuario\\fluig-process\\lib\\fluig-process-cli.jar`\n\nSe vazio, é resolvido a partir de `fluiggers.fluigProcessHome` (procura em `<home>/lib/` e `<home>/cli/`).",
+                        "default": "",
+                        "scope": "machine"
+                    },
+                    "fluiggers.eclipseInstallationPath": {
+                        "type": "string",
+                        "markdownDescription": "(Opcional) Caminho para uma instalação local do Eclipse. A extensão copia automaticamente as bibliotecas SWT (`org.eclipse.swt_*.jar` + fragment nativo da sua plataforma) desse Eclipse para `runtime/plugins/` do fluig-process — necessário porque alguns bundles TOTVS tocam em SWT durante a importação. Exemplos:\n\n- macOS: `/Applications/Eclipse.app` ou `/Applications/Eclipse.app/Contents/Eclipse`\n- Linux: `/opt/eclipse`\n- Windows: `C:\\eclipse`\n\nNão precisa configurar se o ZIP do runtime já trouxer os fragments SWT da sua plataforma.",
+                        "default": "",
+                        "scope": "machine"
                     }
                 }
             }
@@ -569,6 +627,7 @@
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
+        "@types/adm-zip": "^0.5.8",
         "@types/glob": "^8.1.0",
         "@types/mocha": "^10.0.6",
         "@types/node": "^20.12.12",
@@ -576,6 +635,7 @@
         "@typescript-eslint/eslint-plugin": "^7.9.0",
         "@typescript-eslint/parser": "^7.9.0",
         "@vscode/test-electron": "^2.3.10",
+        "adm-zip": "^0.5.17",
         "bootstrap": "^5.3.3",
         "bufferutil": "^4.1.0",
         "datatables.net-bs5": "^2.0.7",

@@ -63,6 +63,7 @@ Após abrir a pasta do projeto Fluig as seguintes funcionalidades serão disponi
 - [Novo Evento de Formulário](#novo-evento-de-formulário)
 - [Importar Formulário e Importar Vários Formulários](#importar-formulário)
 - [Exportar Formulário](#exportar-formulário)
+- [Importar Processo do Servidor](#importar-processo-do-servidor)
 - [Novo Evento de Processo](#novo-evento-de-processo)
 - [Exportar Evento de Processo](#exportar-evento-de-processo)
 - [Novo Evento Global](#novo-evento-global)
@@ -194,6 +195,42 @@ Ao editar um formulário você pode indicar se deve ou não atualizar a versão.
 
 É obrigatório que o nome do arquivo HTML seja igual ao nome do diretório em que está armazenado (o nome do formulário no servidor
 é indiferente), pois é isso que determina qual é o arquivo principal do formulário.
+
+## Importar Processo do Servidor
+
+Esses comandos baixam um ou mais processos publicados em um servidor Fluig e geram localmente os arquivos `.process` no formato Graphiti BPMN2 — exatamente o mesmo formato produzido pelo plugin Eclipse Fluig oficial. Os eventos `.js` e literais `.properties` vinculados a cada processo também são baixados e gravados automaticamente em `workflow/scripts/` e `workflow/.resources/literals/`.
+
+Há dois comandos:
+
+- **Importar Processo**: lista os processos do servidor selecionado, permite escolher um e o baixa.
+- **Importar Vários Processos**: mesma lista, mas com seleção múltipla e barra de progresso.
+
+### Como funciona
+
+A conversão de `.process` Graphiti depende de bibliotecas Java específicas do Eclipse e do TOTVS Fluig que não podem ser reproduzidas em TypeScript. Por isso a extensão delega o trabalho a um **pacote externo** chamado `fluig-process` (CLI Java + bundle headless do Eclipse), invocado via `child_process`. O fluxo na extensão fica seamless mesmo assim porque:
+
+- Credenciais do servidor já configurado na extensão são reaproveitadas — **sem novo prompt de senha**.
+- Na primeira execução, se o runtime não estiver instalado, um diálogo oferece **Baixar e instalar** com um clique. O ZIP é baixado de uma URL configurável (GitHub Release) e instalado em `globalStorageUri`. A configuração `fluiggers.fluigProcessHome` é gravada automaticamente.
+- Alternativamente, você pode apontar `fluiggers.fluigProcessHome` para uma instalação existente do `fluig-process-runtime`.
+
+### Pré-requisitos
+
+- **Java 11 ou superior** disponível no `PATH`.
+- Acesso de rede para baixar o ZIP do runtime (~50 MB) na primeira vez (ou um runtime já instalado localmente).
+
+### Comandos auxiliares
+
+- **Instalar Runtime fluig-process**: baixa e instala o ZIP manualmente.
+- **Remover Runtime fluig-process**: remove o runtime de `globalStorageUri` e limpa a configuração.
+- **Verificar Runtime fluig-process**: diagnóstico rápido (Java, runtime e CLI).
+
+### Configurações relacionadas
+
+| Configuração | Descrição |
+| --- | --- |
+| `fluiggers.fluigProcessHome` | Diretório do runtime fluig-process (preenchido automaticamente após "Instalar"). |
+| `fluiggers.fluigProcessCliPath` | (Opcional) Caminho explícito para o JAR `fluig-process-cli`. Use quando o runtime estiver num layout de pastas fora do padrão — por exemplo, um build local do Maven onde o JAR fica em `target/`. Se vazio, a extensão procura automaticamente em `<home>/cli/` e `<home>/lib/`. |
+
 
 ## Novo Evento de Processo
 

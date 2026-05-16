@@ -2,6 +2,20 @@
 
 Lista de atualizações da Extensão.
 
+## 2.12.0
+
+Adiciona os comandos **Importar Processo** e **Importar Vários Processos** para baixar processos publicados em um servidor Fluig e gravá-los localmente como arquivos `.process` no formato Graphiti BPMN2 (idêntico ao gerado pelo plugin Eclipse Fluig). Eventos `.js` e literais `.properties` vinculados a cada processo também são baixados automaticamente para `workflow/scripts/` e `workflow/.resources/literals/`.
+
+A conversão real é feita por um pacote externo Java (`fluig-process-runtime`) carregado pela extensão. Para deixar o fluxo seamless, foram adicionados:
+
+- Comando **Instalar Runtime fluig-process**: baixa o ZIP do runtime de uma URL configurável e o instala em `globalStorageUri`, configurando `fluiggers.fluigProcessHome` automaticamente.
+- Comando **Remover Runtime fluig-process** e **Verificar Runtime fluig-process** para troubleshooting.
+- Diálogo de onboarding na primeira execução com botão "Baixar e instalar" (1-clique).
+- Reaproveita as credenciais do servidor já configurado na extensão — sem novo prompt de senha.
+- Configurações novas: `fluiggers.fluigProcessHome`, `fluiggers.fluigProcessCliPath`, `fluiggers.fluigProcessRuntimeUrl`.
+
+Veja a seção *Importar Processo do Servidor* no README para pré-requisitos (Java 11+) e detalhes do pacote externo.
+
 ## 2.11.0
 
 Adiciona a opção de selecionar um local diferente para salvar o arquivo de configuração de servidores.
