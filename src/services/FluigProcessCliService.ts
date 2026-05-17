@@ -9,7 +9,6 @@ import {
     copyFileSync,
     existsSync,
     mkdirSync,
-    promises as fsp,
     readdirSync,
     rmSync,
     writeFileSync,
@@ -74,9 +73,19 @@ export class FluigProcessCliService {
             return dir;
         }
 
-        const nested = join(dir, 'runtime');
-        if (FluigProcessCliService.hasLauncherIn(join(nested, 'plugins'))) {
-            return nested;
+        try {
+            const entries = readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                if (!entry.isDirectory()) {
+                    continue;
+                }
+                const candidate = join(dir, entry.name);
+                if (FluigProcessCliService.hasLauncherIn(join(candidate, 'plugins'))) {
+                    return candidate;
+                }
+            }
+        } catch {
+            // ignore unreadable dirs
         }
 
         return null;
