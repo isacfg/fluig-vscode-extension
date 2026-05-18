@@ -368,7 +368,7 @@ export class FluigProcessCliService {
         }
 
         const choice = await window.showErrorMessage(
-            'Runtime fluig-process não encontrado. Ele é necessário para importar processos como .process Graphiti.',
+            'Runtime Fluig Process Runtime não encontrado. Ele é necessário para importar processos como .process Graphiti.',
             { modal: true },
             'Baixar e instalar',
             'Abrir configurações',
@@ -376,9 +376,18 @@ export class FluigProcessCliService {
         );
 
         if (choice === 'Baixar e instalar') {
+            if (!javaOk) {
+                await window.showWarningMessage(
+                    'Java não foi encontrado no PATH. O Fluig Process Runtime requer Java (JDK 11 ou superior) instalado para executar a importação de processos. Instale o Java e tente novamente.',
+                    { modal: true }
+                );
+                return false;
+            }
+
             const installed = await FluigProcessRuntimeInstaller.install(
                 FluigProcessCliService.context
             );
+            FluigProcessCliService.javaAvailable = undefined;
             if (installed && (await FluigProcessCliService.javaWorks())) {
                 return true;
             }
